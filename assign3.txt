@@ -1,0 +1,842 @@
+Script started on Fri Nov 30 21:46:40 2018
+]7;file://joryousukes-MacBook-Pro.local/Users/xuliangliang/eclipse-workspace/SecondYear/java212[1m[7m%[27m[1m[0m                                                                                ]2;xuliangliang@joryousukes-MacBook-Pro]1;..dYear/java212]7;file://joryousukes-MacBook-Pro.local/Users/xuliangliang/eclipse-workspace/SecondYear/java212[0m[27m[24m[J[01;32m➜  [36mjava212[00m [K[?1h=[?2004hccatr  ticT[2Ctaktoe[1m/[0m[0m/*.java[?1l>[?2004l
+]2;cat Tictaktoe/*.java]1;catpackage Tictaktoe;
+
+import java.io.PrintStream;
+
+public class AIPlayer extends player implements global
+{
+  public AIPlayer(board paramBoard, int paramInt, String paramString)
+  {
+    super(paramBoard, paramInt, paramString);
+  }
+  
+  /**
+   *  play(): takes a parameter type board, return void.
+   *  move randomly until if there is chance to lose or win
+   */
+  public void play(board paramBoard)
+  {
+    int i = 0;
+    
+    i = senseWin();
+    if (i != 0)
+    {
+      paramBoard.makeMove(i, playerSymbol);
+      System.out.println(playerName + ": yes... I see a winning move at " + i + "!");
+      return;
+    }
+    
+    i = senseLoss();
+    if (i != 0)
+    {
+      paramBoard.makeMove(i, playerSymbol);
+      System.out.println(playerName + ": I am playing defense at " + i);
+      return;
+    }
+    
+    i = randomLegal();
+    paramBoard.makeMove(i, playerSymbol);
+    System.out.println(playerName + ": hmm... just a random move at " + i);
+  }
+  
+
+
+
+  /**
+   * 
+   * @return next move of win
+   */
+  private int senseWin()
+  {
+    for (int i = 0; i < 3; i++)
+    {
+      for (int j = 0; j < 3; j++)
+      {
+        if (gameBoard.blocks[i][j].getState() == 0)
+        {
+
+
+
+
+
+          int k = 0;
+          if (gameBoard.blocks[0][j].getState() == playerSymbol) k++;
+          if (gameBoard.blocks[1][j].getState() == playerSymbol) k++;
+          if (gameBoard.blocks[2][j].getState() == playerSymbol) k++;
+          if (k == 2) { return 3 * i + 1 + j;
+          }
+          k = 0;
+          if (gameBoard.blocks[i][0].getState() == playerSymbol) k++;
+          if (gameBoard.blocks[i][1].getState() == playerSymbol) k++;
+          if (gameBoard.blocks[i][2].getState() == playerSymbol) k++;
+          if (k == 2) { return 3 * i + 1 + j;
+          }
+          k = 0;
+          if (((i == 0) && (j == 2)) || ((i == 1) && (j == 1)) || ((i == 2) && (j == 0)))
+          {
+            if (gameBoard.blocks[0][2].getState() == playerSymbol) k++;
+            if (gameBoard.blocks[1][1].getState() == playerSymbol) k++;
+            if (gameBoard.blocks[2][0].getState() == playerSymbol) k++;
+            if (k == 2) { return 3 * i + 1 + j;
+            }
+          }
+          k = 0;
+          if (((i == 0) && (j == 0)) || ((i == 1) && (j == 1)) || ((i == 2) && (j == 2)))
+          {
+            if (gameBoard.blocks[0][0].getState() == playerSymbol) k++;
+            if (gameBoard.blocks[1][1].getState() == playerSymbol) k++;
+            if (gameBoard.blocks[2][2].getState() == playerSymbol) k++;
+            if (k == 2) { return 3 * i + 1 + j;
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
+
+ 
+  /**
+   * 
+   * @return the next move to prevent loss
+   */
+  private int senseLoss()
+  {
+    int m;
+    
+
+    if (playerSymbol == 1) {
+      m = 2;
+    } else {
+      m = 1;
+    }
+    for (int i = 0; i < 3; i++)
+    {
+      for (int j = 0; j < 3; j++)
+      {
+        if (gameBoard.blocks[i][j].getState() == 0)
+        {
+
+
+
+
+
+          int k = 0;
+          if (gameBoard.blocks[0][j].getState() == m) k++;
+          if (gameBoard.blocks[1][j].getState() == m) k++;
+          if (gameBoard.blocks[2][j].getState() == m) k++;
+          if (k == 2) { return 3 * i + 1 + j;
+          }
+          k = 0;
+          if (gameBoard.blocks[i][0].getState() == m) k++;
+          if (gameBoard.blocks[i][1].getState() == m) k++;
+          if (gameBoard.blocks[i][2].getState() == m) k++;
+          if (k == 2) { return 3 * i + 1 + j;
+          }
+          k = 0;
+          if (((i == 0) && (j == 2)) || ((i == 1) && (j == 1)) || ((i == 2) && (j == 0)))
+          {
+            if (gameBoard.blocks[0][2].getState() == m) k++;
+            if (gameBoard.blocks[1][1].getState() == m) k++;
+            if (gameBoard.blocks[2][0].getState() == m) k++;
+            if (k == 2) { return 3 * i + 1 + j;
+            }
+          }
+          k = 0;
+          if (((i == 0) && (j == 0)) || ((i == 1) && (j == 1)) || ((i == 2) && (j == 2)))
+          {
+            if (gameBoard.blocks[0][0].getState() == m) k++;
+            if (gameBoard.blocks[1][1].getState() == m) k++;
+            if (gameBoard.blocks[2][2].getState() == m) k++;
+            if (k == 2) { return 3 * i + 1 + j;
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
+  /**
+   * 
+   * @return positions of legal random move
+   */
+  private int randomLegal()
+  {
+    int k = 0;
+    int[] arrayOfInt = new int[9];
+    java.util.Random localRandom = new java.util.Random();
+    
+    for (int i = 0; i < 3; i++)
+    {
+      for (int j = 0; j < 3; j++)
+      {
+        if (gameBoard.blocks[i][j].getState() == 0)
+        {
+          arrayOfInt[(k++)] = (3 * i + 1 + j);
+        }
+      }
+    }
+    
+
+    return arrayOfInt[localRandom.nextInt(k)];
+  }
+}package Tictaktoe;
+
+import java.util.Scanner;
+
+class HumanPlayer extends player
+{
+  public HumanPlayer(board paramBoard, int paramInt, String paramString)
+  {
+    super(paramBoard, paramInt, paramString);
+  }
+  
+
+
+/**
+ * play(borad): takes a parameter of type board and return void 
+ * this method allow human player to make move in the borad
+ */
+  public void play(board paramBoard)
+  {
+    Scanner localScanner = new Scanner(System.in);
+    
+    gameBoard = paramBoard;
+    boolean bool;
+    do
+    {
+      System.out.println("GameBot: Please enter your move by selecting a number from the available moves: ");
+      paramBoard.displayPlayerSelectionBoard();
+      
+      int i = localScanner.nextInt();
+      bool = paramBoard.makeMove(i, playerSymbol);
+      if (!bool) { System.out.println("GameBot: Invalid move! try again...");
+      }
+    } while (!bool);
+  }
+}package Tictaktoe;
+
+/** a basic block for playing */
+class block implements global
+{
+	/** state: to decide the state of the block: empty. 'x' or 'o' */
+  private int state;
+  
+  public block()
+  {
+    state = 0;
+  }
+  
+  /** if it is valid, set the state, return true, else return false */
+  public boolean setState(int paramInt)
+  {
+    if (isValidState(paramInt))
+    {
+      state = paramInt;
+      return true;
+    }
+    
+
+    return false;
+  }
+  
+  /**
+   * 
+   * @return the private integer state
+   */
+  public int getState()
+  {
+    return state;
+  }
+  /** to decide if it is a valid move: 1 stand for 'x', 2 stands for 'o' */
+  public boolean isValidState(int paramInt)
+  {
+    return (paramInt == 2) || (paramInt == 1);
+  }
+  
+  /** decide the state of the block */
+  public String toString()
+  {
+    if (state == 0)
+      return " ";
+    if (state == 1) {
+      return "x";
+    }
+    return "o";// when state == 2;
+  }
+}package Tictaktoe;
+
+import java.io.PrintStream;
+
+class board implements global { 
+	
+	public block[][] blocks;
+	private int state = 0;
+  
+	/**
+	 *  default constructor generates blank block 2d-array()3*3 .
+	 */
+	  public board()
+	  {
+	    blocks = new block[3][3];
+	    for (int i = 0; i < 3; i++)
+	    {
+	      for (int j = 0; j < 3; j++)
+	      {
+	        blocks[i][j] = new block();
+	      }
+	    }
+	  }
+	  
+	  /**
+	   * display Board through separate each " " by "|".
+	   * return void.
+	   */
+	
+	  public void displayBoard()
+	  {
+	    System.out.print("" + blocks[0][0] + "|" + blocks[0][1] + "|" + blocks[0][2] + "\n");
+	    System.out.print("" + blocks[1][0] + "|" + blocks[1][1] + "|" + blocks[1][2] + "\n");
+	    System.out.print("" + blocks[2][0] + "|" + blocks[2][1] + "|" + blocks[2][2] + "\n");
+	  }
+	  
+	  /**
+	   * update every move from the player and display it
+	   * return void 
+	   */
+	  public void displayPlayerSelectionBoard()
+	  {
+	    int i = 1;
+	    for (int j = 0; j < 3; j++)
+	    {
+	      for (int k = 0; k < 3; k++)
+	      {
+	        System.out.print(blocks[j][k].getState() == 0 ? Integer.valueOf(i) : blocks[j][k]);
+	        i++;
+	        if (k != 2) System.out.print("|");
+	      }
+	      System.out.print("\n");//row completion
+	    }
+	  }
+	  
+	/**
+	 * 
+	 * @return state of the game
+	 */
+	  public int updateState()
+	  {
+	    int i = checkRow(0) + checkRow(1) + checkRow(2) + checkCol(0) + checkCol(1) + checkCol(2) + checkDiagonals();
+	    
+	
+	
+	    if (i != 0)
+	    {
+	      state = i;
+	    }
+	    else
+	    {
+	      state = checkDraw();
+	    }
+	    return state;
+	  }
+	  
+	  /**
+	   * @return the integer "state" of the game
+	   */
+	  
+	  public int getState()
+	  {
+	    return updateState();
+	  }
+	  
+	
+	  /**
+	   * 
+	   * @return 3 if it is draw
+	   */
+	  private int checkDraw()
+	  {
+	    for (int i = 0; i < 3; i++) {
+	      for (int j = 0; j < 3; j++)
+	        if (blocks[i][j].getState() == 0) return 0;
+	    }
+	    return 3;
+	  }
+	  
+	  /**
+	   * 
+	   * @param paramInt the current row
+	   * @return state of row now
+	   */
+	  private int checkRow(int paramInt)
+	  {
+	    if (blocks[paramInt][0].getState() != 0)
+	    {
+	      if ((blocks[paramInt][0].getState() == blocks[paramInt][1].getState()) && 
+	        (blocks[paramInt][1].getState() == blocks[paramInt][2].getState()))
+	        return blocks[paramInt][0].getState();
+	    }
+	    return 0;
+	  }
+	  
+	  /**
+	   * 
+	   * @param paramInt
+	   * @return state of columns
+	   */
+	  private int checkCol(int paramInt)
+	  {
+	    if (blocks[0][paramInt].getState() != 0)
+	    {
+	      if ((blocks[0][paramInt].getState() == blocks[1][paramInt].getState()) && 
+	        (blocks[1][paramInt].getState() == blocks[2][paramInt].getState()))
+	        return blocks[0][paramInt].getState();
+	    }
+	    return 0;
+	  }
+	  /**
+	   * 
+	   * @return state of diagonals
+	   */
+	  private int checkDiagonals()
+	  {
+	    if (blocks[0][0].getState() != 0)
+	    {
+	      if ((blocks[0][0].getState() == blocks[1][1].getState()) && 
+	        (blocks[1][1].getState() == blocks[2][2].getState())) {
+	        return blocks[0][0].getState();
+	      }
+	    }
+	    if (blocks[0][2].getState() != 0)
+	    {
+	      if ((blocks[0][2].getState() == blocks[1][1].getState()) && 
+	        (blocks[1][1].getState() == blocks[2][0].getState())) {
+	        return blocks[0][2].getState();
+	      }
+	    }
+	    return 0;
+	  }
+	  /**
+	   * 
+	   * @param paramInt1 (position of the move)
+	   * @param paramInt2 ('x'or'o')
+	   * @return true if moved successfully, else return false
+	   */
+	  public boolean makeMove(int paramInt1, int paramInt2)
+	  {
+	    int i = 0;int j = 0;
+	    /** invalid input */
+	    if ((paramInt1 < 1) || (paramInt1 > 9)) return false;
+	    
+	    /** determine the position of each block */
+	    if (paramInt1 == 1) { i = 0;j = 0; }
+	    if (paramInt1 == 2) { i = 0;j = 1; }
+	    if (paramInt1 == 3) { i = 0;j = 2; }
+	    if (paramInt1 == 4) { i = 1;j = 0; }
+	    if (paramInt1 == 5) { i = 1;j = 1; }
+	    if (paramInt1 == 6) { i = 1;j = 2; }
+	    if (paramInt1 == 7) { i = 2;j = 0; }
+	    if (paramInt1 == 8) { i = 2;j = 1; }
+	    if (paramInt1 == 9) { i = 2;j = 2; }
+	    
+	    /** if it is empty, make a move*/
+	    if (blocks[i][j].getState() == 0)
+	    {
+	      blocks[i][j].setState(paramInt2);
+	      return true;
+	    }
+	    
+	
+	    return false;
+	  }
+}package Tictaktoe;
+
+import java.io.PrintStream;
+import java.util.Random;
+import java.util.Scanner;
+
+class game implements global
+{
+	/** initialize  */
+  board gameBoard;
+  player playerX;
+  player playerO;
+  int turn;
+  
+  boolean done = false;//board control state of choicing mode
+  
+  /**
+   *  default constructor: initialize the game frame
+   *  And start to play by throwing a coin(random)
+   */
+  public game()
+  {
+    Scanner localScanner = new Scanner(System.in);
+    gameBoard = new board();
+    String str1 = "player1";String str2 = "player2";
+    int i = 0;
+    
+    System.out.println("--------------------------------------");
+    System.out.println("XoXoXoooo     Tic            ooooXoXoX");
+    System.out.println("XoXoXoooo         Tac        ooooXoXoX");
+    System.out.println("XoXoXoooo            Toe     ooooXoXoX");
+    System.out.println("--------------------------------------\n");
+   
+    /** 
+     *  game mode chocing state: H vs H, H vs AI, AI vs AI; and naming two player./
+     * */
+    while (!done)
+    {
+      System.out.println("GameBot: Welcome to TicTacToe GAME!");
+      System.out.println("GameBot: Please select a game option: [1] Human vs Human [2] Human vs AI [3] AI vs AI");
+      i = localScanner.nextInt();
+      
+      switch (i)
+      {
+      case 1: 
+        System.out.print("GameBot: Please enter human player X name: ");
+        str1 = localScanner.next().trim();
+        System.out.print("GameBot: Please enter human player O name: ");
+        str2 = localScanner.next().trim();
+        done = true;
+        break;
+      case 2: 
+        System.out.print("GameBot: Please enter human player X name: ");
+        str1 = localScanner.next().trim();
+        System.out.print("GameBot: Please enter AI player O name: ");
+        str2 = localScanner.next().trim();
+       
+        done = true;
+        break;
+      case 3: 
+        System.out.print("GameBot: Please enter AI player X name: ");
+        str1 = localScanner.next().trim();
+        System.out.print("GameBot: Please enter AI player O name: ");
+        str2 = localScanner.next().trim();
+        
+        done = true;
+        break;
+      
+      default: 
+        System.out.println("GameBot: Please enter a valid selection...");
+      }
+      
+    }
+    
+    
+    
+    if (i == 1)
+    {
+      playerX = new HumanPlayer(gameBoard, 1, str1);
+      playerO = new HumanPlayer(gameBoard, 2, str2);
+    }
+    else if (i == 2)
+    {
+      playerX = new HumanPlayer(gameBoard, 1, str1);
+      playerO = new AIPlayer(gameBoard, 2, str2);
+    }
+    else
+    {
+      playerX = new AIPlayer(gameBoard, 1, str1);
+      playerO = new AIPlayer(gameBoard, 2, str2);
+    }
+    
+    System.out.println("GameBot: Game initiated: " + str1 + " VS. " + str2 + "\n");
+  }
+  
+  
+  /**
+   * start():begin this game by random order
+   */
+  public void start()
+  {
+    Random localRandom = new Random();
+    int i = 0;
+    
+    /** Randomly decide who plays first */
+    turn = (localRandom.nextInt(2) + 1);
+    
+    if (turn == 1) {
+      System.out.println("GameBot: " + playerX.playerName + " wins the coin toss... X will start\n");
+    } else {
+      System.out.println("GameBot: " + playerO.playerName + " wins the coin toss... O will start\n");
+    }
+    
+    while (i == 0)
+    {
+      if (turn == 1)
+      {
+        System.out.println("GameBot: Player X's Turn, go ahead " + playerX.playerName + ":");
+        playerX.play(gameBoard);
+      }
+      else
+      {
+        System.out.println("GameBot: Player O's Turn, go ahead " + playerO.playerName + ":");
+        playerO.play(gameBoard);
+      }
+      
+      if (gameBoard.getState() != 0) { i = 1;
+      }
+      if (i == 0)
+      {
+        if (turn == 1) {
+          turn = 2;
+        } else {
+          turn = 1;
+        }
+      }
+    }
+    /**
+     * display the result of the game by state 
+     */
+    gameBoard.displayBoard();
+    if (gameBoard.getState() == 3) {
+      System.out.println("GameBot: It is a DRAW! no winner...");
+    } else if (turn == 1) {
+      System.out.println("GameBot: The winner is player " + playerX);
+    } else {
+      System.out.println("GameBot: The winner is player " + playerO);
+    }
+  }
+}
+package Tictaktoe;
+
+/**
+ * @author xuliangliang
+ *
+ *	use the global interface to sharing the boolean value 
+ *	and the state control variables of the game
+ *
+ */
+abstract interface global
+{
+  public static final int EMPTY = 0;
+  public static final int X = 1;
+  public static final int O = 2;
+  public static final int DRAW = 3;
+  public static final boolean DEBUG = false;
+}
+package Tictaktoe;
+/**
+ * 
+ * @author xuliangliang
+ * abstract class player 
+ * with the all necessary variables and methods for both 
+ * Al player and HumanPlayer
+ */
+abstract class player
+{
+  public int playerSymbol;
+  public board gameBoard;
+  public String playerName;
+  
+  public abstract void play(board paramBoard);
+  
+  public player(board paraBoard, int paraInt, String paraString) {
+    gameBoard = paraBoard;
+    playerSymbol = paraInt;
+    playerName = paraString;
+  }
+  
+  public String toString()
+  {
+    return playerName;
+  }
+}package Tictaktoe;
+
+class tictactoe {
+
+	 tictactoe() {}
+	
+	 public static void main(String[] paramArrayOfString) {
+			    game localGame = new game();
+			    localGame.start();
+	}
+
+}
+[1m[7m%[27m[1m[0m                                                                                ]2;xuliangliang@joryousukes-MacBook-Pro]1;..dYear/java212]7;file://joryousukes-MacBook-Pro.local/Users/xuliangliang/eclipse-workspace/SecondYear/java212[0m[27m[24m[J[01;32m➜  [36mjava212[00m [K[?1h=[?2004hjjavac ticT[2Ctaktoe[1m/[0m[0m/*.java[?1l>[?2004l
+]2;javac Tictaktoe/*.java]1;javac[1m[7m%[27m[1m[0m                                                                                ]2;xuliangliang@joryousukes-MacBook-Pro]1;..dYear/java212]7;file://joryousukes-MacBook-Pro.local/Users/xuliangliang/eclipse-workspace/SecondYear/java212[0m[27m[24m[J[01;32m➜  [36mjava212[00m [K[?1h=[?2004hjjava tick     ti  tiTictaktoe.
+[0mTictaktoe.AIPlayer          Tictaktoe.game            
+Tictaktoe.AdvancedAIPlayer  Tictaktoe.global          
+Tictaktoe.HumanPlayer       Tictaktoe.player          
+Tictaktoe.block             Tictaktoe.tictactoe       
+[JTictaktoe.board             [J                          [5A[0m[27m[24m[11Cjava Tictaktoe.[Ktictactoe[1m [0m[0m [?1l>[?2004l
+[J]2;java Tictaktoe.tictactoe]1;java--------------------------------------
+XoXoXoooo     Tic            ooooXoXoX
+XoXoXoooo         Tac        ooooXoXoX
+XoXoXoooo            Toe     ooooXoXoX
+--------------------------------------
+
+GameBot: Welcome to TicTacToe GAME!
+GameBot: Please select a game option: [1] Human vs Human [2] Human vs AI [3] AI vs AI
+2
+GameBot: Please enter human player X name: Oscar
+GameBot: Please enter AI player O name: Xu
+GameBot: Game initiated: Oscar VS. Xu
+
+GameBot: Oscar wins the coin toss... X will start
+
+GameBot: Player X's Turn, go ahead Oscar:
+GameBot: Please enter your move by selecting a number from the available moves: 
+1|2|3
+4|5|6
+7|8|9
+2
+GameBot: Player O's Turn, go ahead Xu:
+Xu: hmm... just a random move at 1
+GameBot: Player X's Turn, go ahead Oscar:
+GameBot: Please enter your move by selecting a number from the available moves: 
+o|x|3
+4|5|6
+7|8|9
+5
+GameBot: Player O's Turn, go ahead Xu:
+Xu: I am playing defense at 8
+GameBot: Player X's Turn, go ahead Oscar:
+GameBot: Please enter your move by selecting a number from the available moves: 
+o|x|3
+4|x|6
+7|o|9
+7
+GameBot: Player O's Turn, go ahead Xu:
+Xu: I am playing defense at 3
+GameBot: Player X's Turn, go ahead Oscar:
+GameBot: Please enter your move by selecting a number from the available moves: 
+o|x|o
+4|x|6
+x|o|9
+9
+GameBot: Player O's Turn, go ahead Xu:
+Xu: hmm... just a random move at 6
+GameBot: Player X's Turn, go ahead Oscar:
+GameBot: Please enter your move by selecting a number from the available moves: 
+o|x|o
+4|x|o
+x|o|x
+
+4
+o|x|o
+x|x|o
+x|o|x
+GameBot: It is a DRAW! no winner...
+[1m[7m%[27m[1m[0m                                                                                ]2;xuliangliang@joryousukes-MacBook-Pro]1;..dYear/java212]7;file://joryousukes-MacBook-Pro.local/Users/xuliangliang/eclipse-workspace/SecondYear/java212[0m[27m[24m[J[01;32m➜  [36mjava212[00m [K[?1h=[?2004hjava Tictaktoe.tictactoe[?1l>[?2004l
+]2;java Tictaktoe.tictactoe]1;java--------------------------------------
+XoXoXoooo     Tic            ooooXoXoX
+XoXoXoooo         Tac        ooooXoXoX
+XoXoXoooo            Toe     ooooXoXoX
+--------------------------------------
+
+GameBot: Welcome to TicTacToe GAME!
+GameBot: Please select a game option: [1] Human vs Human [2] Human vs AI [3] AI vs AI
+1
+GameBot: Please enter human player X name: Oscar
+GameBot: Please enter human player O name: Jim
+GameBot: Game initiated: Oscar VS. Jim
+
+GameBot: Jim wins the coin toss... O will start
+
+GameBot: Player O's Turn, go ahead Jim:
+GameBot: Please enter your move by selecting a number from the available moves: 
+1|2|3
+4|5|6
+7|8|9
+5
+GameBot: Player X's Turn, go ahead Oscar:
+GameBot: Please enter your move by selecting a number from the available moves: 
+1|2|3
+4|o|6
+7|8|9
+2
+GameBot: Player O's Turn, go ahead Jim:
+GameBot: Please enter your move by selecting a number from the available moves: 
+1|x|3
+4|o|6
+7|8|9
+1
+GameBot: Player X's Turn, go ahead Oscar:
+GameBot: Please enter your move by selecting a number from the available moves: 
+o|x|3
+4|o|6
+7|8|9
+9
+GameBot: Player O's Turn, go ahead Jim:
+GameBot: Please enter your move by selecting a number from the available moves: 
+o|x|3
+4|o|6
+7|8|x
+7
+GameBot: Player X's Turn, go ahead Oscar:
+GameBot: Please enter your move by selecting a number from the available moves: 
+o|x|3
+4|o|6
+o|8|x
+4
+GameBot: Player O's Turn, go ahead Jim:
+GameBot: Please enter your move by selecting a number from the available moves: 
+o|x|3
+x|o|6
+o|8|x
+3
+o|x|o
+x|o| 
+o| |x
+GameBot: The winner is player Jim
+[1m[7m%[27m[1m[0m                                                                                ]2;xuliangliang@joryousukes-MacBook-Pro]1;..dYear/java212]7;file://joryousukes-MacBook-Pro.local/Users/xuliangliang/eclipse-workspace/SecondYear/java212[0m[27m[24m[J[01;32m➜  [36mjava212[00m [K[?1h=[?2004hjava Tictaktoe.tictactoe[?1l>[?2004l
+]2;java Tictaktoe.tictactoe]1;java--------------------------------------
+XoXoXoooo     Tic            ooooXoXoX
+XoXoXoooo         Tac        ooooXoXoX
+XoXoXoooo            Toe     ooooXoXoX
+--------------------------------------
+
+GameBot: Welcome to TicTacToe GAME!
+GameBot: Please select a game option: [1] Human vs Human [2] Human vs AI [3] AI vs AI
+3
+GameBot: Please enter AI player X name: gsD   GSD
+GameBot: Please enter AI player O name: ASD
+GameBot: Game initiated: GSD VS. ASD
+
+GameBot: ASD wins the coin toss... O will start
+
+GameBot: Player O's Turn, go ahead ASD:
+ASD: hmm... just a random move at 1
+GameBot: Player X's Turn, go ahead GSD:
+GSD: hmm... just a random move at 6
+GameBot: Player O's Turn, go ahead ASD:
+ASD: hmm... just a random move at 4
+GameBot: Player X's Turn, go ahead GSD:
+GSD: I am playing defense at 7
+GameBot: Player O's Turn, go ahead ASD:
+ASD: hmm... just a random move at 3
+GameBot: Player X's Turn, go ahead GSD:
+GSD: I am playing defense at 2
+GameBot: Player O's Turn, go ahead ASD:
+ASD: hmm... just a random move at 8
+GameBot: Player X's Turn, go ahead GSD:
+GSD: hmm... just a random move at 5
+GameBot: Player O's Turn, go ahead ASD:
+ASD: hmm... just a random move at 9
+o|x|o
+o|x|x
+x|o|o
+GameBot: It is a DRAW! no winner...
+[1m[7m%[27m[1m[0m                                                                                ]2;xuliangliang@joryousukes-MacBook-Pro]1;..dYear/java212]7;file://joryousukes-MacBook-Pro.local/Users/xuliangliang/eclipse-workspace/SecondYear/java212[0m[27m[24m[J[01;32m➜  [36mjava212[00m [K[?1h=[?2004hlls -l[?1l>[?2004l
+]2;ls -G -l]1;lstotal 56
+drwxr-xr-x   3 xuliangliang  staff     96 29 Nov 17:08 [1m[36mFileManagerApplication[39;49m[0m
+drwxr-xr-x  11 xuliangliang  staff    352 29 Nov 18:13 [1m[36mRecordManagerApplication[39;49m[0m
+drwxr-xr-x  19 xuliangliang  staff    608 30 Nov 21:32 [1m[36mTictaktoe[39;49m[0m
+drwxr-xr-x  13 xuliangliang  staff    416  6 Nov 17:47 [1m[36massigment2_AbstractClass[39;49m[0m
+-rw-r--r--   1 xuliangliang  staff  23031 30 Nov 21:49 assign3.txt
+drwxr-xr-x   4 xuliangliang  staff    128 22 Oct 23:10 [1m[36mlab3workwithobject[39;49m[0m
+drwxr-xr-x  10 xuliangliang  staff    320 28 Oct 17:01 [1m[36mlab4[39;49m[0m
+drwxr-xr-x   9 xuliangliang  staff    288  8 Nov 12:16 [1m[36mlab6[39;49m[0m
+drwxr-xr-x  23 xuliangliang  staff    736 29 Nov 17:57 [1m[36mlab9[39;49m[0m
+-rw-r--r--@  1 xuliangliang  staff    221 29 Nov 19:41 record.txt
+drwx------@ 12 xuliangliang  staff    384 26 Nov 07:12 [1m[36mttt[39;49m[0m
+[1m[7m%[27m[1m[0m                                                                                ]2;xuliangliang@joryousukes-MacBook-Pro]1;..dYear/java212]7;file://joryousukes-MacBook-Pro.local/Users/xuliangliang/eclipse-workspace/SecondYear/java212[0m[27m[24m[J[01;32m➜  [36mjava212[00m [K[?1h=[?2004hccd c    exit[?1l>[?2004l
+]2;exit]1;exit
+Script done on Fri Nov 30 21:50:09 2018
